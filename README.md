@@ -24,6 +24,21 @@ mpirun -np 4 ./pairwise_alltoall 100
 
 Add `--local-unbound` to the selector on local Open MPI setups where automatic placement fails. It requests explicit localhost slots, maps ranks by slot, and disables core binding. Record placement when comparing timings.
 
+## Interactive MPI explorer
+
+From the repository root, open the explorer in your default browser:
+
+```sh
+.venv/bin/python visualize_mpi.py
+```
+
+- **Compare timings.** Change the number of ranks and integers per destination to see the archived median for each algorithm. Configurations outside the benchmark grid have no archived timings.
+- **Preview the selector.** Toggle the experimental tree to see which executable the launcher would choose. The explorer fits the same tree using the current training CSV.
+- **Trace the exchange.** With 4 ranks, choose rank 0 and round 1. Rank 0 sends to rank 1 and receives from rank 3. Change the round to see how the custom `MPI_Sendrecv` schedule rotates through peers. The MPI library chooses the internal schedule for `MPI_Alltoall`.
+- **Run MPI locally.** Copy the displayed command into Terminal to launch the selected executable and verify the received data. The explorer itself displays archived measurements and does not launch MPI.
+
+To generate an HTML snapshot without opening the browser, run `.venv/bin/python visualize_mpi.py --output mpi-explorer-snapshot.html`. The destination must be a new file.
+
 ## Exchange and correctness
 
 Each of the P ranks sends a block of count integers to every rank, including itself. Its send buffer is indexed by destination and its receive buffer by source. Both contain P × count integers per rank. For source s, destination d, and offset j, the sent value is s × P × count + d × count + j.
