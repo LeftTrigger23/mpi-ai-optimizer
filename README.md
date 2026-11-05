@@ -24,6 +24,13 @@ mpirun -np 4 ./pairwise_alltoall 100
 
 Add `--local-unbound` to the selector on local Open MPI setups where automatic placement fails. It requests explicit localhost slots, maps ranks by slot, and disables core binding. Record placement when comparing timings.
 
+## Development before the selector
+
+1. **Learn the MPI basics.** [hello_mpi.c](hello_mpi.c) initializes MPI and reports each rank and the communicator size. [send_recv.c](send_recv.c) sends an integer from rank 0 to rank 1. [sendrecv.c](sendrecv.c) has two ranks exchange integers using `MPI_Sendrecv`.
+2. **Implement and verify all-to-all.** [alltoall.c](alltoall.c) calls the library collective. [pairwise_alltoall.c](pairwise_alltoall.c) implements the same exchange with rotating send and receive partners. Both fill the send buffers with identifiable values and check every received element against its expected source, destination, and offset.
+3. **Benchmark both implementations.** The original [benchmark results](benchmark_results.csv) include four-rank comparisons. The [automated results](automated_results.csv) record a wider grid. [benchmark.py](benchmark.py) repeats each of the 12 configurations five times per algorithm and saves the medians in [repeated_results.csv](repeated_results.csv).
+4. **Prepare the learning dataset.** [prepare_data.py](prepare_data.py) turns the timing medians into one row per configuration in [training_data.csv](training_data.csv). The process count and block size are the input features. The faster algorithm supplies the label, with ties assigned to `MPI_Alltoall`.
+
 ## Interactive MPI explorer
 
 From the repository root, open the explorer in your default browser:
