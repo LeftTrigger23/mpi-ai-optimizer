@@ -3,8 +3,4 @@
 __pycache__/
 *.py[cod]
 .DS_Store
-/alltoall
-/pairwise_alltoall
-/hello_mpi
-/send_recv
-/sendrecv
+/bin/

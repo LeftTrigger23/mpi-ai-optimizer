@@ -4,7 +4,7 @@ import argparse
 from pathlib import Path
 import subprocess
 
-PROJECT = Path(__file__).resolve().parent
+PROJECT = Path(__file__).resolve().parents[1]
 
 
 def choose_algorithm(processes, count, experimental_tree):
@@ -40,7 +40,7 @@ def main():
         parser.error("configuration exceeds the original programs' integer range")
 
     program, reason = choose_algorithm(args.processes, args.count, args.experimental_tree)
-    executable = PROJECT / program
+    executable = PROJECT / "bin" / program
     print(f"Selected {program} ({reason})", flush=True)
     launch_options = []
     if args.local_unbound:

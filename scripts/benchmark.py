@@ -1,6 +1,9 @@
 import subprocess
 import csv
 import statistics
+from pathlib import Path
+
+PROJECT = Path(__file__).resolve().parents[1]
 
 
 # Run an MPI benchmark and return its communication time
@@ -61,7 +64,7 @@ repetitions = 5
 
 
 # Open a CSV file to save the benchmark results
-with open("repeated_results.csv", "w", newline="") as file:
+with open(PROJECT / "data" / "repeated_results.csv", "w", newline="") as file:
 
     # Create a CSV writer
     writer = csv.writer(file)
@@ -89,14 +92,14 @@ with open("repeated_results.csv", "w", newline="") as file:
 
                 # Run standard MPI_Alltoall
                 standard_time = run_benchmark(
-                    "./alltoall",
+                    str(PROJECT / "bin" / "alltoall"),
                     processes,
                     count
                 )
 
                 # Run custom pairwise all-to-all
                 pairwise_time = run_benchmark(
-                    "./pairwise_alltoall",
+                    str(PROJECT / "bin" / "pairwise_alltoall"),
                     processes,
                     count
                 )
@@ -125,4 +128,4 @@ with open("repeated_results.csv", "w", newline="") as file:
 
 
 print("Benchmarking complete!")
-print("Results saved to repeated_results.csv")
+print("Results saved to data/repeated_results.csv")

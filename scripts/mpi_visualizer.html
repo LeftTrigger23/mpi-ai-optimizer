@@ -75,7 +75,7 @@ function render() {
     if (key === '2,1') byId('gap').textContent = 'The archived difference is ' + Math.abs(timings[0] - timings[1]).toFixed(3) + ' µs. The original five-run archive cannot establish the repeatability of a small gap.';
   }
   byId('command').hidden = !valid;
-  byId('command').textContent = valid ? 'cd ~/mpi-ai-optimizer && .venv/bin/python run_selector.py ' + p + ' ' + c + (tree ? ' --experimental-tree' : '') + ' --local-unbound' : '';
+  byId('command').textContent = valid ? '.venv/bin/python scripts/run_selector.py ' + p + ' ' + c + (tree ? ' --experimental-tree' : '') + ' --local-unbound' : '';
   const rank = byId('rank');
   const round = byId('round');
   rank.disabled = round.disabled = !valid;

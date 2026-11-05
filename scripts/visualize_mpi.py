@@ -21,7 +21,7 @@ def main():
         f"{processes},{count}": int(prediction)
         for (processes, count), prediction in zip(X[FEATURES].itertuples(index=False, name=None), predictions)
     }
-    with (PROJECT / "repeated_results.csv").open(newline="") as source:
+    with (PROJECT / "data" / "repeated_results.csv").open(newline="") as source:
         timings = {
             f"{row['processes']},{row['count']}": [
                 float(row["standard_time"]) * 1e6,
@@ -30,7 +30,7 @@ def main():
             for row in csv.DictReader(source)
         }
 
-    template = (PROJECT / "mpi_visualizer.html").read_text()
+    template = (PROJECT / "scripts" / "mpi_visualizer.html").read_text()
     html = template.replace("__BENCHMARK_DATA__", json.dumps({"timings": timings, "choices": choices}))
     destination = args.output or Path(mkdtemp(prefix="mpi-visualizer-")) / "index.html"
     with destination.open("x", encoding="utf-8") as output:

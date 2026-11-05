@@ -7,12 +7,12 @@ from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import LeaveOneOut, cross_val_predict
 from sklearn.tree import DecisionTreeClassifier, export_text
 
-PROJECT = Path(__file__).resolve().parent
+PROJECT = Path(__file__).resolve().parents[1]
 FEATURES = ["processes", "count"]
 
 
 def load_dataset():
-    data = pd.read_csv(PROJECT / "training_data.csv", dtype=int)
+    data = pd.read_csv(PROJECT / "data" / "training_data.csv", dtype=int)
     if data.duplicated(FEATURES).any():
         raise ValueError("Expected one row per benchmark configuration")
     return data[FEATURES], data["label"]
@@ -30,7 +30,7 @@ def main():
     baseline = [0] * len(y)
 
     # Timings are joined only for scoring. They never enter the model.
-    timings = pd.read_csv(PROJECT / "repeated_results.csv").set_index(FEATURES)
+    timings = pd.read_csv(PROJECT / "data" / "repeated_results.csv").set_index(FEATURES)
     report = X.assign(label=y, held_out=held_out).join(timings, on=FEATURES)
     for name, predictions in [("Always standard", baseline), ("Held-out tree", held_out)]:
         matrix = confusion_matrix(y, predictions, labels=[0, 1])

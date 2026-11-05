@@ -1,8 +1,11 @@
 import csv
+from pathlib import Path
+
+DATA = Path(__file__).resolve().parents[1] / "data"
 
 
 # Read the benchmark results
-with open("repeated_results.csv", "r", newline="") as file:
+with open(DATA / "repeated_results.csv", "r", newline="") as file:
 
     reader = csv.DictReader(file)
 
@@ -34,7 +37,7 @@ with open("repeated_results.csv", "r", newline="") as file:
 
 
 # Save the labeled dataset
-with open("training_data.csv", "w", newline="") as file:
+with open(DATA / "training_data.csv", "w", newline="") as file:
 
     writer = csv.writer(file)
 
@@ -50,4 +53,4 @@ with open("training_data.csv", "w", newline="") as file:
 
 
 print("Dataset preparation complete!")
-print("Results saved to training_data.csv")
+print("Results saved to data/training_data.csv")
