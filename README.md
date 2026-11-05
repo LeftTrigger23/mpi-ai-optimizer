@@ -62,7 +62,7 @@ Both executables run 10 warmups, synchronize with a barrier before timing, and u
 
 Run `benchmark.py` followed by `prepare_data.py` only in a separate working copy to preserve the originals. Both scripts write fixed filenames in the current directory and overwrite those files. Copy or build the MPI executables into that working copy first because the benchmark uses relative executable paths.
 
-## Step 13 · Decision tree and evaluation
+## Decision tree and evaluation
 
 `train_selector.py` constructs X from `processes` and `count`, and y from `label`. The model is a scikit-learn classifier with maximum depth two and a fixed random seed. No timing columns are used as features. The script rejects duplicate configuration keys so a held-out row cannot have an identical configuration in training. Timings are joined after prediction to compute regret, the chosen median minus the lower of the two medians for that configuration. [DecisionTreeClassifier reference](https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html)
 
@@ -77,7 +77,7 @@ When the only pairwise-winning configuration is held out, the training fold cont
 
 The tree fitted on all 12 rows predicts pairwise when count ≤ 5.5 and processes ≤ 3. It predicts standard otherwise. That fits all 12 archived labels, including the one weak pairwise label. The script prints the rules and both fitted and held-out predictions for each row.
 
-## Step 14 · Selector and end-to-end verification
+## Selector and end-to-end verification
 
 `run_selector.py PROCESSES COUNT` selects one executable before starting MPI, so every rank runs the same implementation. The default is standard. With `--experimental-tree`, it fits the same tree on the archived labels and uses it only on exact configurations present in the training grid. Outside the grid it falls back to standard. The Python launcher runs once per job and its startup and fitting overhead are outside the C timing.
 
