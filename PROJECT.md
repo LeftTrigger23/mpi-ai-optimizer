@@ -39,6 +39,10 @@ From the repository root, open the explorer in your default browser:
 
 To generate an HTML snapshot without opening the browser, run `.venv/bin/python visualize_mpi.py --output mpi-explorer-snapshot.html`. The destination must be a new file.
 
+![MPI explorer showing the default selector and archived benchmark medians](docs/images/mpi-selector.png)
+
+![MPI explorer showing the custom pairwise exchange and benchmark methodology](docs/images/mpi-exchange.png)
+
 ## Exchange and correctness
 
 Each of the P ranks sends a block of count integers to every rank, including itself. Its send buffer is indexed by destination and its receive buffer by source. Both contain P × count integers per rank. For source s, destination d, and offset j, the sent value is s × P × count + d × count + j.
